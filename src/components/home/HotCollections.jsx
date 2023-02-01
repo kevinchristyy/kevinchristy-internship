@@ -9,18 +9,20 @@ import { Link } from "react-router-dom";
 
 const HotCollections = () => {
   const [NFT, setNFT] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  async function NFTHotCollections() {
+    setLoading(true);
+    const { data } = await axios.get(
+      `https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections`
+    );
+    setNFT(data);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }
 
   useEffect(() => {
-    async function NFTHotCollections() {
-      const { data } = await axios.get(
-        `https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections`
-      );
-      setNFT(data);
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
-    }
     NFTHotCollections();
   }, []);
 
@@ -67,7 +69,7 @@ const HotCollections = () => {
                 <div className="" key={index}>
                   <div className="nft_coll">
                     <div className="nft_wrap">
-                      <Skeleton width={310} height={250} borderRadius={1} />
+                      <Skeleton width={310} height={240} borderRadius={1} />
                     </div>
                     <div className="nft_coll_pp">
                       <Skeleton width={60} height={60} borderRadius={55} />
